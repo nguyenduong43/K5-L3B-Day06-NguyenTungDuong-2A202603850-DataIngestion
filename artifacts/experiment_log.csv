@@ -1,4 +1,4 @@
 strategy,chunking,chunk_size,overlap,metadata,filter,vectorizer,hypothesis,dev_hit1,dev_hit3,test_hit1,test_hit3,notes
-A,,,,,,,,,,,,
-B,,,,,,,,,,,,
-C,,,,,,,,,,,,
+A,fixed_size,500,50,"section,page,source",none,gemini-embedding-001,Fixed window preserves local dense phrases but sentence splits harm coherence,0.467,0.867,0.600,1.000,101 chunks; Hit@3 reaches 86.7% dev and 100% test
+B,by_paragraph,800,0,"section,page,source",none,gemini-embedding-001,Paragraph boundaries preserve complete semantic units improving Hit@1 on dev,0.600,0.800,0.200,1.000,71 chunks; Dev Hit@1 reaches 60.0% with 30% fewer chunks
+C,by_paragraph,800,0,"section,page,source",section_filter,gemini-embedding-001,Metadata section filter eliminates out-of-scope noise for targeted queries,0.600,0.800,0.200,1.000,71 chunks; 100% filter compliance (3/3)
