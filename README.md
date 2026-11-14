@@ -32,6 +32,45 @@ Dùng cùng dữ liệu, model và câu hỏi cho cả ba cấu hình. Tách **1
 2. Điền [thông tin học viên](STUDENT.md), [nhật ký thí nghiệm](artifacts/experiment_log.csv) và bản sao [mẫu báo cáo cá nhân](report/individual/MSSV_HoTen.md).
 3. Kiểm tra mã nguồn, cách chạy, manifest dữ liệu và checklist trong [SUBMISSION.md](SUBMISSION.md).
 
+## 4. Hướng dẫn cài đặt và chạy Pipeline (Reproducibility)
+
+### 1. Khởi động PostgreSQL + pgvector
+```bash
+cd starter
+docker compose -p day6_student_starter up -d
+```
+
+### 2. Thiết lập môi trường Python
+```bash
+cd starter
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 3. Cấu hình biến môi trường
+Tạo file `starter/.env` với nội dung:
+```env
+DATABASE_URL=postgresql://day6:day6_local_only@127.0.0.1:55433/day6_lab
+GEMINI_API_KEY=<API_KEY_CỦA_BẠN>
+EMBEDDING_MODEL=gemini-embedding-001
+```
+
+### 4. Chạy toàn bộ Pipeline và Benchmark
+```bash
+cd starter
+python -m src.run
+```
+Toàn bộ trace và số liệu được tự động xuất ra thư mục [results/](results/):
+- [all_traces.json](results/all_traces.json)
+- [traces_strategy_A.json](results/traces_strategy_A.json)
+- [traces_strategy_B.json](results/traces_strategy_B.json)
+- [traces_strategy_C.json](results/traces_strategy_C.json)
+- [benchmark_summary.json](results/benchmark_summary.json)
+- [manual_audit.md](results/manual_audit.md)
+
+Báo cáo phân tích cá nhân: [report/individual/2A202603850_NguyenTungDuong.md](report/individual/2A202603850_NguyenTungDuong.md).
+
 ## Tài liệu hướng dẫn
 
 | Bạn cần tìm | Tài liệu |
