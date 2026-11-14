@@ -144,13 +144,31 @@ def main() -> None:
             print(f"{strat_name:<12} | {sp:<6} | {h1:<10} | {h3:<16} | {fc:<18}")
         print("-" * 65)
 
-    # 9. Save Traces to Results
-    results_dir = base_dir / "results"
-    results_dir.mkdir(parents=True, exist_ok=True)
-    traces_file = results_dir / "benchmark_traces.json"
-    with open(traces_file, "w", encoding="utf-8") as f:
+    # 9. Save Traces to Root Results
+    root_results_dir = Path(__file__).resolve().parents[2] / "results"
+    root_results_dir.mkdir(parents=True, exist_ok=True)
+
+    with open(root_results_dir / "all_traces.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
-    print(f"\nSaved full benchmark traces to: {traces_file}")
+
+    with open(root_results_dir / "traces_strategy_A.json", "w", encoding="utf-8") as f:
+        json.dump(results.get("Strategy A", {}).get("traces", []), f, ensure_ascii=False, indent=2)
+
+    with open(root_results_dir / "traces_strategy_B.json", "w", encoding="utf-8") as f:
+        json.dump(results.get("Strategy B", {}).get("traces", []), f, ensure_ascii=False, indent=2)
+
+    with open(root_results_dir / "traces_strategy_C.json", "w", encoding="utf-8") as f:
+        json.dump(results.get("Strategy C", {}).get("traces", []), f, ensure_ascii=False, indent=2)
+
+    summary_data = {
+        "Strategy A": results.get("Strategy A", {}).get("summary", {}),
+        "Strategy B": results.get("Strategy B", {}).get("summary", {}),
+        "Strategy C": results.get("Strategy C", {}).get("summary", {}),
+    }
+    with open(root_results_dir / "benchmark_summary.json", "w", encoding="utf-8") as f:
+        json.dump(summary_data, f, ensure_ascii=False, indent=2)
+
+    print(f"\nSaved all benchmark traces and summary files to: {root_results_dir}")
 
 
 if __name__ == "__main__":
